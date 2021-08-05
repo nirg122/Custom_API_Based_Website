@@ -1,0 +1,210 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+
+<main>
+
+    <!-- Display flash message -->
+    <section class="section--center mdl-grid mdl-grid--no-spacing">
+        <div id="flashmessage" class="flash">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li><strong> {{ message }} </strong></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <!-- Timeout flash message -->
+            <script>$('#flashmessage').fadeOut(3000);</script>
+        </div>
+    </section>
+    <section>
+        <form class="container" method="POST">
+            <div class="container">
+                <h3>Products</h3>
+                <label>General Search: <input id="search-term" name="search-term" type="text"
+                                              value=""></label>
+            </div>
+            <div class="container">
+                <h2>Criteria Selection</h2>
+                <div class="row row-cols-4 g-4">
+                    <select name="criteria-0" class="form-select" aria-label="Default select example">
+                        <option selected>Select Criteria</option>
+                        {% for option in criteria %}
+                        <option value="{{option}}">{{option.replace('_', ' ').title()}}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="criteria-0-contain" class="form-select"
+                            aria-label="Default select example">
+                        {% for option in do_contains %}
+                        <option value="{{option}}">{{option.replace('_', ' ').title()}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Value: <input name="criteria-0-value" type="text" value=""></label>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row row-cols-2 g-3" style="margin: 15px 0;">
+                    <div class="col"><label>Additives:</label>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="additives"
+                                   id="additivesRadio1"
+                                   value="with_additives">
+                            <label class="form-check-label" for="additivesRadio1">With</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="additives"
+                                   id="additivesRadio2"
+                                   value="without_additives">
+                            <label class="form-check-label" for="additivesRadio2">Without</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="additives"
+                                   id="additivesRadio3"
+                                   value="indifferent_additives" checked>
+                            <label class="form-check-label" for="additivesRadio3">Indifferent</label>
+                        </div>
+                    </div>
+                    <div class="col"><label>Ingredients From Palm Oil: </label>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="ingredients-from-palm-oil"
+                                   id="ingredients-from-palm-oil-Radio1"
+                                   value="with">
+                            <label class="form-check-label"
+                                   for="ingredients-from-palm-oil-Radio1">With</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="ingredients-from-palm-oil"
+                                   id="ingredients-from-palm-oil-Radio2"
+                                   value="without">
+                            <label class="form-check-label"
+                                   for="ingredients-from-palm-oil-Radio2">Without</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="ingredients-from-palm-oil"
+                                   id="ingredients-from-palm-oil-Radio3"
+                                   value="indifferent" checked>
+                            <label class="form-check-label"
+                                   for="ingredients-from-palm-oil-Radio3">Indifferent</label>
+                        </div>
+                    </div>
+                    <div class="col"><label>Ingredients That May Be From Palm Oil: </label>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                                   name="ingredients-that-may-be-from-palm-oil"
+                                   id="ingredients-that-may-be-from-palm-oil-Radio1"
+                                   value="with">
+                            <label class="form-check-label"
+                                   for="ingredients-that-may-be-from-palm-oil-Radio1">With</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                                   name="ingredients-that-may-be-from-palm-oil"
+                                   id="ingredients-that-may-be-from-palm-oil-Radio2"
+                                   value="without">
+                            <label class="form-check-label"
+                                   for="ingredients-that-may-be-from-palm-oil-Radio2">Without</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                                   name="ingredients-that-may-be-from-palm-oil"
+                                   id="ingredients-that-may-be-from-palm-oil-Radio3"
+                                   value="indifferent" checked>
+                            <label class="form-check-label"
+                                   for="ingredients-that-may-be-from-palm-oil-Radio3">Indifferent</label>
+                        </div>
+                    </div>
+                    <div class="col"><label>Ingredients From Or That May Be From Palm Oil: </label>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                                   name="ingredients-from-or-that-may-be-from-palm-oil"
+                                   id="ingredients-from-or-that-may-be-from-palm-oil-Radio1"
+                                   value="with">
+                            <label class="form-check-label"
+                                   for="ingredients-from-or-that-may-be-from-palm-oil-Radio1">With</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                                   name="ingredients-from-or-that-may-be-from-palm-oil"
+                                   id="ingredients-from-or-that-may-be-from-palm-oil-Radio2"
+                                   value="without">
+                            <label class="form-check-label"
+                                   for="ingredients-from-or-that-may-be-from-palm-oil-Radio2">Without</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                                   name="ingredients-from-or-that-may-be-from-palm-oil"
+                                   id="ingredients-from-or-that-may-be-from-palm-oil-Radio3"
+                                   value="indifferent" checked>
+                            <label class="form-check-label"
+                                   for="ingredients-from-or-that-may-be-from-palm-oil-Radio3">Indifferent</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit" value="Submit">Submit</button>
+        </form>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3" style="margin: 25px 0 25px 0;">
+                {% if info['products'] %}
+                {% for record in info['products'] %}
+                {% if record['image_url'] %}
+                {% if record['product_name'] %}
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{record['image_url']}}" style="max-width: 18rem; max-height: 18rem;"
+                             class="card-img-top" alt="Photo Does Not Exist">
+                        <div class="card-body">
+                            <h5 class="card-title">{{record['product_name'].title()}}</h5>
+                            {% if record['ingredients_text_en'] %}
+                            <h3>Ingredient:</h3>
+                            <ul>
+                                {% for i in range(5) %}
+                                {% if record['ingredients_text_en'].split(',')[i] %}
+                                <li>{{record['ingredients_text_en'].split(',')[i]}}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% elif record['ingredients_text'] %}
+                            <ul>
+                                {% for i in range(5) %}
+                                {% if record['ingredients_text'].split(',')[i] %}
+                                <li>{{record['ingredients_text'].split(',')[i]}}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            <br>
+                            <a href="https://il-en.openfoodfacts.org/product/{{record['_id']}}"
+                               class="btn btn-primary">More Information</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% elif info["products"] == [] and request_method == 'POST' %}
+
+
+            <div>
+                <h2>No Product Was Found,</h2>
+                <h3>Please Try To Search Again With Different Choices.</h3>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+{% endblock %}
