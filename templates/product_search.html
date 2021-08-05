@@ -22,16 +22,16 @@
         </div>
     </section>
     <section>
-        <form class="container" method="POST">
+        <form class="container" action="/" method="POST">
             <div class="container">
-                <h3>Products</h3>
+                <h3>Search For Products</h3>
                 <label>General Search: <input id="search-term" name="search-term" type="text"
                                               value=""></label>
             </div>
             <div class="container">
-                <h2>Criteria Selection</h2>
+                <h3 style="margin: 10px 0;">Criteria Selection:</h3>
                 <div class="row row-cols-4 g-4">
-                    <select name="criteria-0" class="form-select" aria-label="Default select example">
+                    <select style="margin-right: 5px;" name="criteria-0" class="form-select" aria-label="Default select example">
                         <option selected>Select Criteria</option>
                         {% for option in criteria %}
                         <option value="{{option}}">{{option.replace('_', ' ').title()}}</option>
@@ -47,7 +47,8 @@
                 </div>
             </div>
             <div class="container">
-                <div class="row row-cols-2 g-3" style="margin: 15px 0;">
+                <h3 style="margin: 10px 0;">Ingredients:</h3>
+                <div class="row row-cols-2 g-3">
                     <div class="col"><label>Additives:</label>
                         <br>
                         <div class="form-check form-check-inline">
@@ -149,7 +150,25 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" type="submit" value="Submit">Submit</button>
+            <div class="container">
+                <h3 style="margin: 10px 0;">Nutriments:</h3>
+                <div class="row row-cols-2 g-3">
+                    <select style="margin-right: 5px;" name="nutriment_0" class="form-select" aria-label="Default select example">
+                        <option value="" selected>Select a Nutriment</option>
+                        {% for nutriment in nutriment_dict %}
+                        <option value="{{nutriment.strip('en:')}}">{{nutriment.strip('en:').title()}}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="nutriment_compare_0" class="form-select" aria-label="Default select example">
+                        <option selected value="">Select a Operator</option>
+                        {% for key, value in operator_dict.items() %}
+                        <option value="{{value}}">{{key}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Value:<input class="value-input" name="nutriment_value_0" type="text" value=""></label>
+                </div>
+            </div>
+            <button class="btn btn-primary search-btn" type="submit" value="Submit">Search</button>
         </form>
     </section>
     <section>
@@ -185,7 +204,7 @@
                             {% endif %}
                             <br>
                             <a href="https://il-en.openfoodfacts.org/product/{{record['_id']}}"
-                               class="btn btn-primary">More Information</a>
+                               class="btn btn-primary" target="_blank">More Information</a>
                         </div>
                     </div>
                 </div>
@@ -195,13 +214,14 @@
             </div>
             {% elif info["products"] == [] and request_method == 'POST' %}
 
+            </div>
 
             <div>
                 <h2>No Product Was Found,</h2>
                 <h3>Please Try To Search Again With Different Choices.</h3>
-                {% endif %}
+
             </div>
-        </div>
+        {% endif %}
     </section>
 
 </main>

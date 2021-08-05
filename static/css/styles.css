@@ -5,3 +5,18 @@ body {
 .form-select {
     width: 24%;
     }
+
+#search-term {
+    width: 450px;
+    margin-left: 10px;
+}
+
+.search-btn {
+    margin: 5% 20%;
+    padding: 10px 150px;
+    font-weight: bold;
+}
+
+.value-input {
+    margin-left: 7px;
+}
